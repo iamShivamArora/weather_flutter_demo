@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:country_state_city/models/city.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_weather_demo/home/weather_report_model.dart';
@@ -28,8 +29,8 @@ class HomeViewModel extends ChangeNotifier with HelperClass {
   changeAddressList(List<City>? list, bool isClear) {
     addressList.clear();
     if (!isClear) {
-      print("changechange");
-      print(list);
+      printDataLogs("changechange");
+      printDataLogs(list);
       addressList.addAll(list!);
     }
 
@@ -45,13 +46,15 @@ class HomeViewModel extends ChangeNotifier with HelperClass {
           connectivityResult[0] == ConnectivityResult.wifi)) {
         throw new Exception('NO INTERNET CONNECTION');
       }
+      var baseurl = dotenv.env['BaseUrl'];
+      var apiKey = dotenv.env['AppId'];
       var url = lat.isEmpty
-          ? "${Constants.baseUrl}${Constants.weather}?lat=${locationData.latitude.toString()}"
-              "&lon=${locationData.longitude.toString()}&appid=${Constants.appid}"
-          : "${Constants.baseUrl}${Constants.weather}?lat=${lat}"
-              "&lon=${lng}&appid=${Constants.appid}";
+          ? "$baseurl${Constants.weather}?lat=${locationData.latitude.toString()}"
+              "&lon=${locationData.longitude.toString()}&appid=$apiKey"
+          : "$baseurl${Constants.weather}?lat=$lat"
+              "&lon=$lng&appid=$apiKey";
 
-      print(url);
+      printDataLogs(url);
 
       var response = await http.get(Uri.parse(url));
 
@@ -59,11 +62,11 @@ class HomeViewModel extends ChangeNotifier with HelperClass {
 
       var res = WeatherReportModel.fromJson(value);
       if (value['cod'] == 200) {
-        print('success');
+        printDataLogs('success');
       }
       return res;
     } catch (e) {
-      print(e);
+      printDataLogs(e);
 
       toast(notInternetMsg(e.toString().contains('Exception:')
           ? e.toString().replaceFirst(RegExp('Exception:'), '')
@@ -82,13 +85,17 @@ class HomeViewModel extends ChangeNotifier with HelperClass {
           connectivityResult[0] == ConnectivityResult.wifi)) {
         throw new Exception('NO INTERNET CONNECTION');
       }
-      var url = lat.isEmpty
-          ? "${Constants.baseUrl}${Constants.forecast}?lat=${locationData.latitude.toString()}"
-              "&lon=${locationData.longitude.toString()}&appid=${Constants.appid}"
-          : "${Constants.baseUrl}${Constants.forecast}?lat=${lat}"
-              "&lon=${lng}&appid=${Constants.appid}";
 
-      print(url);
+      var baseurl = dotenv.env['BaseUrl'];
+      var apiKey = dotenv.env['AppId'];
+
+      var url = lat.isEmpty
+          ? "$baseurl${Constants.forecast}?lat=${locationData.latitude.toString()}"
+              "&lon=${locationData.longitude.toString()}&appid=$apiKey"
+          : "$baseurl${Constants.forecast}?lat=$lat"
+              "&lon=$lng&appid=$apiKey";
+
+      printDataLogs(url);
 
       var response = await http.get(Uri.parse(url));
 
@@ -96,11 +103,11 @@ class HomeViewModel extends ChangeNotifier with HelperClass {
 
       var res = ForecastReportModel.fromJson(value);
       if (value['cod'].toString() == "200") {
-        print('success');
+        printDataLogs('success');
       }
       return res;
     } catch (e) {
-      print(e);
+      printDataLogs(e);
 
       toast(notInternetMsg(e.toString().contains('Exception:')
           ? e.toString().replaceFirst(RegExp('Exception:'), '')
@@ -118,8 +125,8 @@ class HomeViewModel extends ChangeNotifier with HelperClass {
       return await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
     } else if (permission == LocationPermission.denied) {
-      print("permission");
-      print(permission);
+      printDataLogs("permission");
+      printDataLogs(permission);
       await Geolocator.requestPermission();
       return await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);

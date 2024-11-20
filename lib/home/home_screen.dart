@@ -215,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> with HelperClass {
                       }
                       Future.delayed(Duration(milliseconds: 200), () async {
                         homeViewModelChange.changeAddressList(list, false);
-                        // print('Result: ${predictions}');
+                        // printDataLogs('Result: ${predictions}');
                       });
                     }
                   },

@@ -13,9 +13,9 @@ class NetworkHelper with HelperClass {
         connectivityResult[0] == ConnectivityResult.wifi)) {
       throw new Exception('NO INTERNET CONNECTION');
     }
-    print(response.statusCode);
+    printDataLogs(response.statusCode);
 
-    print(response.body);
+    printDataLogs(response.body);
     try {
       Map<String, dynamic> res = json.decode(response.body);
 
@@ -34,7 +34,7 @@ class NetworkHelper with HelperClass {
       // if (response.statusCode == 401) {
       //   pushToScreenAndClearStack(ctx, LoginScreen());
       // }
-      print(error);
+      printDataLogs(error);
       throw error;
     }
   }

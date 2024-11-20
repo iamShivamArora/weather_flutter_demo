@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:open_weather_demo/home/home_screen.dart';
 import 'package:open_weather_demo/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'home/home_view_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 

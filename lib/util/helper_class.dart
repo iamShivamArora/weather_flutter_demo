@@ -24,12 +24,12 @@ mixin HelperClass {
   }
 
   toast(String message) {
-    // print(message);
+    // printDataLogs(message);
     Fluttertoast.showToast(msg: message);
   }
 
   String notInternetMsg(String msg) {
-    print("sdsadsadas    " + msg);
+    printDataLogs("sdsadsadas    " + msg);
     if (msg.contains('SocketException: Failed host lookup: ')) {
       return 'No Internet Connection';
     } else if (msg.contains('OS Error: Connection refused')) {
@@ -62,7 +62,7 @@ mixin HelperClass {
   //     },
   //   ).then((value) {
   //     loader.changeLoaderVisibility();
-  //     print("chakta oya");
+  //     printDataLogs("chakta oya");
   //   });
   // }
 
@@ -131,5 +131,9 @@ mixin HelperClass {
 
   popToBackScreen(context) {
     Navigator.of(context).pop();
+  }
+
+  printDataLogs(data) {
+    // print(data);
   }
 }
